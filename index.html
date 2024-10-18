@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-
+<button id="sendToFacebook">Send Data to Facebook</button>
     testttt
     <script>
         window.fbAsyncInit = function() {
@@ -29,5 +29,32 @@
            fjs.parentNode.insertBefore(js, fjs);
          }(document, 'script', 'facebook-jssdk'));
       </script>
+<script>
+    document.getElementById('sendToFacebook').addEventListener('click', function() {
+        fetch('/.netlify/functions/facebook-capi', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                event_name: 'Purchase',
+                value: 99.99,
+                currency: 'USD'
+                // Add more data here as needed
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert('Data sent to Facebook CAPI');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to send data to Facebook');
+        });
+    });
+</script>
+
+    
 </body>
 </html>
